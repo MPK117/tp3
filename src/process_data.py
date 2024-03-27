@@ -37,18 +37,24 @@ def format_data(df: pd.DataFrame):
     return df
 
 
-def export_data(df: pd.DataFrame):
+def calculate_daily_average(df: pd.DataFrame):
+    df["day_of_week"] = df[col_date].dt.day_name()
+    daily_avg = df.groupby("day_of_week")[col_donnees].mean().reset_index()
+    return daily_avg
+
+
+def export_data(df: pd.DataFrame, filename: str):
     os.makedirs("data/interim/", exist_ok=True)
-    df.to_csv(fic_export_data, index=False)
+    df.to_csv(filename, index=False)
 
 
 def main_process():
     df: pd.DataFrame = load_data()
     df = format_data(df)
-    export_data(df)
+    daily_avg = calculate_daily_average(df)
+    export_data(df, fic_export_data)
+    return daily_avg
 
 
 if __name__ == "__main__":
-
-    # data_file: str = "data/raw/eco2mix-regional-tr.csv"
     main_process()
