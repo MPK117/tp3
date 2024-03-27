@@ -7,7 +7,7 @@ import logging
 import os
 import glob
 
-def remove_data(df: pd.DataFrame, last_n_samples: int = 4*24): 
+def remove_data(df: pd.DataFrame, last_n_samples: int = 4*3): 
        # df: pd.DataFrame = pd.read_csv(fic_export_data)    
        return df.iloc[:-last_n_samples]   
         # df.to_csv(fic_export_data, index=False)
@@ -35,6 +35,7 @@ def load_data(lag_days: int):
     return data, daily_avg, daily_min_max
 
 df, daily_avg, daily_min_max = load_data(LAG_N_DAYS)
+df = remove_data(df, last_n_samples=4*24)
 
 st.subheader("Line Chart of Numerical Data Over Time")
 numerical_column = col_donnees
