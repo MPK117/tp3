@@ -7,7 +7,6 @@ import logging
 import os
 import glob
 
-
 logging.basicConfig(level=logging.INFO)
 
 LAG_N_DAYS: int = 7
@@ -28,6 +27,10 @@ def load_data(lag_days: int):
     load_data_from_lag_to_today(lag_days)
     daily_avg, daily_min_max, empty_periods_count = main_process()
     data = pd.read_csv(fic_export_data, parse_dates=[col_date])
+
+    # Filter data up to 26th date
+    data = data[data[col_date] <= '2024-03-26']
+
     return data, daily_avg, daily_min_max, empty_periods_count
 
 df, daily_avg, daily_min_max, empty_periods_count = load_data(LAG_N_DAYS)
