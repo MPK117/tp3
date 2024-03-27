@@ -43,6 +43,12 @@ def calculate_daily_average(df: pd.DataFrame):
     return daily_avg
 
 
+def calculate_daily_min_max(df: pd.DataFrame):
+    daily_min_max = df.groupby(df[col_date].dt.date)[col_donnees].agg(['min', 'max']).reset_index()
+    daily_min_max.columns = ['date', 'min_consumption', 'max_consumption']
+    return daily_min_max
+
+
 def export_data(df: pd.DataFrame, filename: str):
     os.makedirs("data/interim/", exist_ok=True)
     df.to_csv(filename, index=False)
@@ -52,8 +58,9 @@ def main_process():
     df: pd.DataFrame = load_data()
     df = format_data(df)
     daily_avg = calculate_daily_average(df)
+    daily_min_max = calculate_daily_min_max(df)
     export_data(df, fic_export_data)
-    return daily_avg
+    return daily_avg, daily_min_max
 
 
 if __name__ == "__main__":
