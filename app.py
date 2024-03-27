@@ -44,6 +44,6 @@ st.plotly_chart(fig_bar)
 
 st.subheader("Daily Minimum and Maximum Consumption over the Last 7 Days")
 
-# Create line charts for daily minimum and maximum consumption
-fig_min_max = px.line(daily_min_max, x='date', y=['min_consumption', 'max_consumption'], title='Consommation quotidienne minimale et maximale sur les 7 derniers jours')
-st.plotly_chart(fig_min_max)
+# Display daily minimum and maximum consumption as numbers
+st.write("Consommation quotidienne minimale et maximale sur les 7 derniers jours :")
+st.write(daily_min_max)
