@@ -37,4 +37,7 @@ fig = px.line(df, x=col_date, y=col_donnees, title="Consommation en fonction du 
 st.plotly_chart(fig)
 
 st.subheader("Average Consumption per Day of the Week")
-st.write(daily_avg)
+
+# Create a bar chart for daily average consumption
+fig_bar = px.bar(daily_avg, x='day_of_week', y=col_donnees, title='Moyenne de la consommation par jour de la semaine')
+st.plotly_chart(fig_bar)
