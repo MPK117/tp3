@@ -10,7 +10,6 @@ col_donnees: str = "consommation"
 cols: List[str] = [col_date, col_donnees]
 fic_export_data: str = "data/interim/data.csv"
 
-SEUIL_TEMPS_ENTRE_DATES: int = 3600  # Seuil de 1 heure (en secondes)
 
 def load_data():
     list_fic: list[str] = [Path(e) for e in glob.glob("data/raw/*json")]
@@ -59,22 +58,8 @@ def main_process():
     df = format_data(df)
     daily_avg = calculate_daily_average(df)
     daily_min_max = calculate_daily_min_max(df)
-    empty_periods_count = count_empty_periods(df)
     export_data(df, fic_export_data)
-    return daily_avg, daily_min_max, empty_periods_count
-
-
-def count_empty_periods(df: pd.DataFrame):
-    # Calculer la différence entre chaque date pour détecter les périodes vides
-    df['time_diff'] = df[col_date].diff().dt.total_seconds()
-    
-    # Identifier les périodes vides en vérifiant si le temps entre les dates est supérieur à un certain seuil
-    empty_periods = df[df['time_diff'] > SEUIL_TEMPS_ENTRE_DATES]
-    
-    # Compter le nombre de périodes vides
-    empty_periods_count = len(empty_periods)
-    
-    return empty_periods_count
+    return daily_avg, daily_min_max
 
 
 if __name__ == "__main__":
