@@ -7,8 +7,13 @@ import logging
 import os
 import glob
 import time
+import requests
+from dotenv import load_dotenv
+ 
+load_dotenv()
 from schedule import every, repeat
 import schedule
+LENGTH_DATA: int = 0
 
 logging.basicConfig(level=logging.INFO)
 
@@ -53,4 +58,12 @@ st.write(daily_min_max)
 
 while True:
     schedule.run_pending()
-    time.sleep(10)
+    df: pd.DataFrame = pd.read_csv(fic_export_data, parse_dates=[col_date])
+    if len(df) > LENGTH_DATA:
+        LENGTH_DATA = len(df)
+        logging.info(f"Nb points de mesure: {LENGTH_DATA}")
+        st.toast("Nouvelles données disponibles", icon="🎉")
+    requests.post(
+        os.environ["BLOWERIO_URL"] + "/messages",
+        data={"to": "+33676XXXXXX", "message": "Test du SMS"},
+    )

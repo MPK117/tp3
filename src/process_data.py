@@ -4,6 +4,7 @@ import os
 import glob
 from pathlib import Path
 import json
+import logging
 from schedule import every, repeat
 import schedule
 logging.basicConfig(level=logging.INFO)
