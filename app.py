@@ -6,6 +6,9 @@ from src.process_data import col_date, col_donnees, main_process, fic_export_dat
 import logging
 import os
 import glob
+import time
+from schedule import every, repeat
+import schedule
 
 logging.basicConfig(level=logging.INFO)
 
@@ -47,3 +50,7 @@ st.subheader("Daily Minimum and Maximum Consumption over the Last 7 Days")
 # Display daily minimum and maximum consumption as numbers
 st.write("Consommation quotidienne minimale et maximale sur les 7 derniers jours :")
 st.write(daily_min_max)
+
+while True:
+    schedule.run_pending()
+    time.sleep(10)

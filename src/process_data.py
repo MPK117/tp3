@@ -4,6 +4,9 @@ import os
 import glob
 from pathlib import Path
 import json
+from schedule import every, repeat
+import schedule
+logging.basicConfig(level=logging.INFO)
 
 col_date: str = "date_heure"
 col_donnees: str = "consommation"
@@ -52,7 +55,7 @@ def export_data(df: pd.DataFrame, filename: str):
     os.makedirs("data/interim/", exist_ok=True)
     df.to_csv(filename, index=False)
 
-
+@repeat(every(5).minutes)
 def main_process():
     df: pd.DataFrame = load_data()
     df = format_data(df)
